@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{A243EB05-491A-BEA9-5B12-2A829A585499}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "TPSReubenWard",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	]
+}
