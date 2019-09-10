@@ -2,9 +2,10 @@
 
 #include "SpherePawn.h"
 
-#include "Classes/Components/InputComponent.h"
-#include "Classes/GameFramework/FloatingPawnMovement.h"
+#include "Classes/GameFramework/FloatingPawnMovement.h" 
+#include "Classes/GameFramework/SpringArmComponent.h"
 #include "Classes/Camera/CameraComponent.h"
+#include "Classes/Components/InputComponent.h"
 #include "Classes/Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -17,12 +18,17 @@ ASpherePawn::ASpherePawn()
 
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
-
-	Camera = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-	Camera->SetupAttachment(StaticMesh);
-	Camera->SetRelativeLocation(FVector(-500.0f, 0.0f, 0.0f));
 	
+	CameraArm = CreateDefaultSubobject<USpringArmComponent>("CameraSpringArm");
+	CameraArm->SetupAttachment(StaticMesh);
+	CameraArm->TargetArmLength = 500.0f;
+	Camera = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+	Camera->SetupAttachment(CameraArm);
+
 	SetRootComponent(StaticMesh);
+
+	bUseControllerRotationYaw = true;
+	bUseControllerRotationPitch = true;
 }
 
 // Called when the game starts or when spawned
@@ -42,6 +48,16 @@ void ASpherePawn::MoveRight(float a_val)
 	FloatingPawnMovement->AddInputVector(GetActorRightVector() * a_val);
 }
 
+void ASpherePawn::Turn(float a_val)
+{
+	AddControllerYawInput(a_val);
+}
+
+void ASpherePawn::LookUp(float a_val)
+{
+	AddControllerPitchInput(a_val);
+}
+
 // Called every frame
 void ASpherePawn::Tick(float DeltaTime)
 {
@@ -56,5 +72,7 @@ void ASpherePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ASpherePawn::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ASpherePawn::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, &ASpherePawn::Turn);
+	PlayerInputComponent->BindAxis("LookUp", this, &ASpherePawn::LookUp);
 }
 

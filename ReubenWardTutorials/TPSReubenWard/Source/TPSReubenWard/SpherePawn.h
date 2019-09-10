@@ -21,6 +21,8 @@ protected:
 
 	void MoveForward(float a_val);
 	void MoveRight(float a_val);
+	void Turn(float a_val);
+	void LookUp(float a_val);
 
 	class UFloatingPawnMovement* FloatingPawnMovement;
 
@@ -29,6 +31,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 		 class UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+		class USpringArmComponent* CameraArm;
 
 public:	
 	// Called every frame
